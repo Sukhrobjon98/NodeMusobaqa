@@ -1,7 +1,8 @@
+import { TelegramUpdate } from './telegram.update';
 import { Module } from "@nestjs/common";
 
 @Module({
-    imports: [],
+    imports: [TelegramUpdate],
     controllers: [],
     providers: [],
 })
