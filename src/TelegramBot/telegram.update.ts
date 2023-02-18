@@ -5,23 +5,11 @@ import { Message } from "telegraf/typings/core/types/typegram";
 @Update()
 export class TelegramUpdate {
     Data: Array<any>
+    userInfo:Object
     constructor(@InjectBot() private readonly bot: Telegraf<Context>) {
         this.Data = [
-            {
-                name: 'Sartaroshxona',
-                type: 'sartarosh',
-            },
-            {
-                name: 'Go\'zallik saloni',
-                type: 'salon',
-            }
-            ,
-            {
-                name: 'Zargarlik ustaxonasi',
-                type: 'zargar',
-            },
-
-        ]
+            {   name: 'Sartaroshxona', type: 'sartarosh',},{name: 'Go\'zallik saloni',ype: 'salon',}]
+        
     }
 
 
@@ -78,24 +66,16 @@ export class TelegramUpdate {
     }
 
 
+    //Usta ro'yhatdan o'tish qismi
+
+
 }
 
 
         //Usta ro'yhatdan o'tish qismi
 
         //     this.bot.action('sartarosh', (ctx) => {
-        //         const ustaInfo = {
-        //             name: ctx.from.first_name,
-        //             phone_number: ctx.from,
-        //             type: 'sartarosh',
-        //             service_location: 'location',
-        //             service_description: 'Palon joyda sartaroshxona ishlaydi',
-        //             open_time: '10:00',
-        //             close_time: '18:00',
-        //             service_price: '10000',
-        //             spend_time: '30m',
-        //             service_rating: '4.5',
-        //         }
+                
         //         ctx.replyWithHTML('<b>Ismini kiriting</b>', {
 
         //         });
@@ -105,3 +85,17 @@ export class TelegramUpdate {
         // }
 
 
+
+
+// this.userInfo = {
+//     name: '',
+//     phone_number: '',
+//     type: '',
+//     service_location: '',
+//     service_description: '',
+//     open_time: '10:00',
+//     close_time: '18:00',
+//     service_price: '10000',
+//     spend_time: '30m',
+//     service_rating: '4.5',
+// }     
