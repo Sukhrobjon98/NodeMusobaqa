@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
-import { Service } from "src/services/schemas/service.schema";
+import { Order } from "src/orders/schemas/order.schema";
 
 export type ClientDocument = HydratedDocument<Client>;
 
@@ -26,6 +26,9 @@ export class Client {
         required: true,
     })
     telegram_id: number;
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Order'}]})
+    orders: Order[];
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);
