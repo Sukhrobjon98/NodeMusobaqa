@@ -1,27 +1,26 @@
 import { Query } from 'mongoose';
 import { log } from 'console';
-import { Hears, InjectBot, On, Start, Update } from "nestjs-telegraf";
+import { Action, Hears, InjectBot, On, Start, Update } from "nestjs-telegraf";
 import { RolesService } from "src/roles/roles.service";
 import { ServicesService } from "src/services/services.service";
 import { Composer, Context, Telegraf } from "telegraf";
-import { CallbackQuery, Message } from "telegraf/typings/core/types/typegram";
+import { CallbackQuery, InputLocationMessageContent, Location, Message } from "telegraf/typings/core/types/typegram";
+import { MasterService } from 'src/master/master.service';
+import { Master } from 'src/master/schemas/master.schema';
 
 @Update()
 export class TelegramUpdate {
     services: Array<any>
     userInfo: Object
-    constructor(@InjectBot() private readonly bot: Telegraf<Context>, private roleService: RolesService, private serviceService: ServicesService) {
+    constructor(@InjectBot() private readonly bot: Telegraf<Context>, private roleService: RolesService, private serviceService: ServicesService, private masterService: MasterService) {
     }
     @Start()
     async onStart(ctx: Context) {
         const telegram_id = ctx.from.id
         this.services = await this.serviceService.getAllServices()
-        this.userInfo = {
-            name: '', phone_number: '', type: '', service_location: '',
-            service_description: '', open_time: '10:00', close_time: '18:00',
-            service_price: '10000', spend_time: '30m', service_rating: '4.5',
-        }
+       
         const check = await this.roleService.findUser(telegram_id)
+        
         if (check) {
             if (check.role == 'admin') {
                 return this.enterAdmin(ctx)
@@ -72,19 +71,28 @@ export class TelegramUpdate {
     //Usta uchun
     @Hears("Usta")
     async getMaster(ctx: Context) {
-        ctx.replyWithHTML('<b>Siz qaysi kasb egasisiz?</b>', {
-            reply_markup: {
-                inline_keyboard: this.services.map((item) => [{ text: item.title, callback_data: item.title }]),
-                resize_keyboard: true,
-            }
+        ctx.replyWithHTML("Iltimos ma'lumotlarni shu tarzda yuboring!\n<b>Name</b>: Palonchi\n<b>Phone number</b>: +998 99 999 99 99\n<b>Service</b>: Palon\n<b>Price</b>: 10000 so'm\n<b>Time</b>: 30 min\n<b>Serrvice nomi</b>:Sartarosh palonchi\n<b>Open time</b>: 09:00\n<b>Close time</b>: 18:00",{
+        reply_markup:{
+            keyboard:[[
+                {text:'Location',request_location:true}
+            ]],
+            resize_keyboard:true
+        }
         })
+        this.masterService.createMaster({telegram_id:ctx.from.id})
     }
 
 
-    @On('callback_query',)
-    async onCallbackQuery(ctx: Context) {
-        const msg = ctx.callbackQuery['data']
-    }
+@On('location')
+async getLocation(ctx:Context){
+    const location = ctx.message as Message.LocationMessage
+    console.log(location.location);
+    this.masterService.updateMasterByTelegramId(ctx.from.id, { service_location:location.location})
+
+}
+
+
+
 
 
     //Admin uchun

@@ -25,7 +25,9 @@ export class RolesService {
     }
 
     async findUser(telegram_id: number): Promise<Role> {
-        const user = this.roleModel.findOne({ telegram_id }).exec();
+        const user = await this.roleModel.findOne({ telegram_id }).exec();
+        console.log(telegram_id);
+        
         return user;
     }
 }

@@ -6,18 +6,18 @@ export type MasterDocument = HydratedDocument<Master>;
 
 @Schema({ timestamps: true })
 export class Master {
-  @Prop({type: mongoose.Schema.Types.ObjectId})
-  _id: mongoose.Schema.Types.ObjectId;
+  // @Prop({type: mongoose.Schema.Types.ObjectId})
+  // _id: mongoose.Schema.Types.ObjectId;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   name: string;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   phone_number: string;
 
@@ -30,13 +30,13 @@ export class Master {
   @Prop()
   service_name: string;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, required: false })
   service_id: number;
 
   @Prop({
-    type: String,
+    type: Object,
   })
-  service_location: string;
+  service_location: Object;
 
   @Prop({
     type: String,
@@ -50,23 +50,23 @@ export class Master {
   close_time: string;
 
   @Prop({
-    required: true,
+    required: false,
     type: Number,
   })
   service_price: number;
 
   @Prop({
-    required: true,
+    required: false,
   })
   spend_time: number;
 
-  @Prop({default: 0})
+  @Prop({ default: 0 })
   service_rating: number;
 
-  @Prop({required: true, type: Number})
+  @Prop({ required: false, type: Number })
   telegram_id: number;
 
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Orders'})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }] })
   orders: Order[];
 }
 

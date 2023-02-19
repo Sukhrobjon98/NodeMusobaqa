@@ -14,7 +14,7 @@ export class MasterService {
         private orderModel: Model<OrderDocument>,
     ) {}
 
-    async createMaster(master: Master): Promise<Master> {
+    async createMaster(master: any): Promise<Master> {
         const newMaster = new this.masterModel(master);
         return await newMaster.save();
     }
@@ -36,7 +36,7 @@ export class MasterService {
         return await this.masterModel.findByIdAndUpdate(id, master).exec();
     }
 
-    async updateMasterByTelegramId(telegram_id: number, master: Master): Promise<Master> {
+    async updateMasterByTelegramId(telegram_id: number, master: any): Promise<Master> {
         return await this.masterModel.findOneAndUpdate({ telegram_id }, master).exec();
     }
 
