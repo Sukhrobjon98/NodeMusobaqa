@@ -5,19 +5,6 @@ import { Master } from 'src/master/schemas/master.schema';
 
 export type OrderDocument = HydratedDocument<Order>;
 
-class RangeDate {
-  @Prop({
-    type: Date,
-    required: true,
-  })
-  start: Date;
-
-  @Prop({
-    type: Date,
-    required: true,
-  })
-  end: Date;
-}
 
 export class Order {
   @Prop({
@@ -33,10 +20,11 @@ export class Order {
   client: Client;
 
   @Prop({
-    type: RangeDate,
+    type: Date,
     required: true,
   })
-  time_range: RangeDate;
+  date: Date;
+  
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

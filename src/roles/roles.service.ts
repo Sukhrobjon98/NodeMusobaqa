@@ -23,4 +23,10 @@ export class RolesService {
         const user = new this.roleModel({ telegram_id, role: 'admin' });
         return user.save();
     }
+
+    async findUser(telegram_id: number) : Promise<String> {
+        return this.roleModel.findOne({ telegram_id }).exec().then((user) => {
+            return user.role;
+        });
+    }
 }

@@ -21,6 +21,14 @@ export class Client {
     })
     phone_number: string;
 
+    @Prop({
+        type: Number,
+        required: true,
+    })
+    telegram_id: number;
+
+    
+
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);
