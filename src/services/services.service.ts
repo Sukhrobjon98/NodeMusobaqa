@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ServiceDocument } from './schemas/service.schema';
+import { Service, ServiceDocument } from './schemas/service.schema';
 
 @Injectable()
 export class ServicesService {
@@ -12,5 +12,10 @@ export class ServicesService {
     async createService(service: ServiceDocument): Promise<ServiceDocument> {
         const newService = new this.serviceModel(service);
         return newService.save();
+    }
+
+    async getAllServices(): Promise<Service[]> {
+        const services = this.serviceModel.find().exec();
+        return services;
     }
 }

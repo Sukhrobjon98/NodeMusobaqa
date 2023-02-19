@@ -1,10 +1,10 @@
 import { Client } from "src/client/dto/client.dto";
-import { Service } from "src/services/dto/service.dto";
+import { Order } from "src/orders/schemas/order.schema";
 
 export class Master {
   id: number;
   name: string;
   phone_number: string;
-  services: Service[];
+  orders: Order[];
   clients: Client[];
 }

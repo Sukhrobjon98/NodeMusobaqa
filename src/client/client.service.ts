@@ -9,4 +9,18 @@ export class ClientService {
         @InjectModel(Client.name) private clientModel: Model<ClientDocument>,
     ) {}
     
+    async createClient(client: Client): Promise<Client> {
+        const newClient =  new  this.clientModel(client);
+        return await newClient.save();
+    }
+
+    async getAllClients(): Promise<Client[]> {
+        const clients = await this.clientModel.find().exec();
+        return clients;
+    }
+
+    async getClientById(telegram_id: string): Promise<Client> {
+        return await this.clientModel.findOne({ telegram_id }).exec();
+    }
+
 }

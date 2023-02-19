@@ -1,8 +1,8 @@
-import { Service } from "src/services/dto/service.dto";
+import { Order } from "src/orders/schemas/order.schema";
 
 export class Client {
     id: number;
     name: string;
     phone_number: string;
-    services: Service[];
+    orders: Order[];
 }
