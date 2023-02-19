@@ -68,7 +68,7 @@ export class Master {
   @Prop({required: true, type: Number})
   telegram_id: number;
 
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: Order.name})
+  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Orders'})
   orders: Order[];
 }
 

@@ -8,6 +8,7 @@ import { OrdersModule } from './orders/orders.module';
 import { RolesModule } from './roles/roles.module';
 
 import { TelegrafModule } from 'nestjs-telegraf';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     TelegramModule,
@@ -19,7 +20,7 @@ import { TelegrafModule } from 'nestjs-telegraf';
     RolesModule,
     TelegramModule, TelegrafModule.forRoot({
       token: '5854102071:AAHQVvTYpZs5rFFozFG8uOaQHerzoTrD0gA',
-    }),
+    }), AdminModule,
   ],
 })
 

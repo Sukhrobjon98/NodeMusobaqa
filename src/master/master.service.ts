@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Order } from 'src/orders/schemas/order.schema';
+import { Client } from 'src/client/schemas/client.schema';
+import { Order, OrderDocument } from 'src/orders/schemas/order.schema';
 import { Master, MasterDocument } from './schemas/master.schema';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class MasterService {
         @InjectModel(Master.name)
         private masterModel: Model<MasterDocument>,
         @InjectModel(Order.name)
-        private orderModel: Model<Order>,
+        private orderModel: Model<OrderDocument>,
     ) {}
 
     async createMaster(master: Master): Promise<Master> {
@@ -48,5 +49,10 @@ export class MasterService {
         return (await this.getAllOrdersByTelegramId(telegram_id)).filter(order => {
             return order.date >= start && order.date <= end;
         });
-    }  
+    }
+
+    async getClientsByTelegramId(telegram_id: number): Promise<Client[]> {
+        const orders = await this.getAllOrdersByTelegramId(telegram_id);
+        return orders.map(order => order.client);
+    }
 }
