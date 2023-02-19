@@ -1,12 +1,15 @@
+<<<<<<< HEAD
 import { Prop, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
 import { Order } from "src/orders/schemas/order.schema";
+=======
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import  { HydratedDocument } from "mongoose";
+>>>>>>> a9f7073 (regsiter side)
 
 export type MasterDocument = HydratedDocument<Master>;
 
-
-
-
+@Schema({ timestamps: true })
 export class Master {
   @Prop({type: mongoose.Schema.Types.ObjectId})
   _id: mongoose.Schema.Types.ObjectId;

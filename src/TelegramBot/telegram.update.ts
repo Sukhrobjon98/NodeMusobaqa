@@ -1,25 +1,27 @@
+import { Query } from 'mongoose';
+import { log } from 'console';
 import { Hears, InjectBot, On, Start, Update } from "nestjs-telegraf";
 import { RolesService } from "src/roles/roles.service";
-import { Context, Telegraf } from "telegraf";
-import { Message } from "telegraf/typings/core/types/typegram";
+import { ServicesService } from "src/services/services.service";
+import { Composer, Context, Telegraf } from "telegraf";
+import { CallbackQuery, Message } from "telegraf/typings/core/types/typegram";
 
 @Update()
 export class TelegramUpdate {
-    Data: Array<any>
+    services: Array<any>
     userInfo: Object
-    constructor(@InjectBot() private readonly bot: Telegraf<Context>, private roleService: RolesService) {
-        this.Data = [
-            { name: 'Sartaroshxona', type: 'sartarosh', }, { name: 'Go\'zallik saloni', ype: 'salon', }]
-
+    constructor(@InjectBot() private readonly bot: Telegraf<Context>, private roleService: RolesService, private serviceService: ServicesService) {
     }
     @Start()
     async onStart(ctx: Context) {
         const telegram_id = ctx.from.id
-        console.log(telegram_id);
-
+        this.services = await this.serviceService.getAllServices()
+        this.userInfo = {
+            name: '', phone_number: '', type: '', service_location: '',
+            service_description: '', open_time: '10:00', close_time: '18:00',
+            service_price: '10000', spend_time: '30m', service_rating: '4.5',
+        }
         const check = await this.roleService.findUser(telegram_id)
-        console.log(check);
-
         if (check) {
             if (check.role == 'admin') {
                 return this.enterAdmin(ctx)
@@ -38,9 +40,6 @@ export class TelegramUpdate {
     }
 
 
-    //Royhatdan o'tish qismi
-
-
 
 
     //Royhatdan o'tish uchun
@@ -49,10 +48,10 @@ export class TelegramUpdate {
             reply_markup: {
                 keyboard: [[
                     { text: "Ro'yhatdan o'tish" }
-                
+
                 ]],
                 resize_keyboard: true,
- 
+
             }
         })
     }
@@ -70,19 +69,22 @@ export class TelegramUpdate {
 
         })
     }
-//Usta uchun
+    //Usta uchun
     @Hears("Usta")
     async getMaster(ctx: Context) {
-        const telegram_id = ctx.from.id
-        ctx.replyWithHTML('<b>Iltimos</b> Iltimos ma\'lumotlarni to\'liq kiriting!',{
+        ctx.replyWithHTML('<b>Siz qaysi kasb egasisiz?</b>', {
             reply_markup: {
-                keyboard: [[]],
+                inline_keyboard: this.services.map((item) => [{ text: item.title, callback_data: item.title }]),
+                resize_keyboard: true,
             }
         })
     }
 
 
-
+    @On('callback_query',)
+    async onCallbackQuery(ctx: Context) {
+        const msg = ctx.callbackQuery['data']
+    }
 
 
     //Admin uchun
@@ -94,8 +96,11 @@ export class TelegramUpdate {
                 resize_keyboard: true,
             }
         })
+
+
     }
 
+    //Admin uchun
     @Hears('Servislar')
     servislar(ctx: Context) {
         ctx.replyWithHTML("<b>Servislar</b>")
@@ -182,15 +187,3 @@ export class TelegramUpdate {
 
 
 
-// this.userInfo = {
-//     name: '',
-//     phone_number: '',
-//     type: '',
-//     service_location: '',
-//     service_description: '',
-//     open_time: '10:00',
-//     close_time: '18:00',
-//     service_price: '10000',
-//     spend_time: '30m',
-//     service_rating: '4.5',
-// }     
