@@ -24,7 +24,12 @@ export class Order {
     required: true,
   })
   date: Date;
-  
+
+  @Prop({
+    type: Number,
+    required: true,
+  })
+  duration: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

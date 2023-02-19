@@ -1,14 +1,11 @@
-import { Schema } from '@nestjs/mongoose';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export enum RoleEnum {
   ADMIN = 'admin',
   MASTER = 'master',
   USER = 'user',
 }
-
 
 @Schema({ timestamps: true })
 export class Role {
