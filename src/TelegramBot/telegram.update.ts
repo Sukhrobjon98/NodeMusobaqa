@@ -70,6 +70,17 @@ export class TelegramUpdate {
 
         })
     }
+//Usta uchun
+    @Hears("Usta")
+    async getMaster(ctx: Context) {
+        const telegram_id = ctx.from.id
+        ctx.replyWithHTML('<b>Iltimos</b> Iltimos ma\'lumotlarni to\'liq kiriting!',{
+            reply_markup: {
+                keyboard: [[]],
+            }
+        })
+    }
+
 
 
 
