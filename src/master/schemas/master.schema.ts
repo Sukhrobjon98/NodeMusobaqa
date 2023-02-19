@@ -1,5 +1,6 @@
 import { Prop, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
+import { Order } from "src/orders/schemas/order.schema";
 
 export type MasterDocument = HydratedDocument<Master>;
 
@@ -7,6 +8,9 @@ export type MasterDocument = HydratedDocument<Master>;
 
 
 export class Master {
+  @Prop({type: mongoose.Schema.Types.ObjectId})
+  _id: mongoose.Schema.Types.ObjectId;
+
   @Prop({
     type: String,
     required: true,
@@ -60,6 +64,12 @@ export class Master {
 
   @Prop({default: 0})
   service_rating: number;
+
+  @Prop({required: true, type: Number})
+  telegram_id: number;
+
+  @Prop({type: mongoose.Schema.Types.ObjectId, ref: Order.name})
+  orders: Order[];
 }
 
 export const MasterSchema = SchemaFactory.createForClass(Master);

@@ -5,7 +5,6 @@ import { Master } from 'src/master/schemas/master.schema';
 
 export type OrderDocument = HydratedDocument<Order>;
 
-
 export class Order {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +29,9 @@ export class Order {
     required: true,
   })
   duration: number;
+
+  @Prop({ type: Number, required: true })
+  service_id: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
