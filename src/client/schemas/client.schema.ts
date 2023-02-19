@@ -26,9 +26,6 @@ export class Client {
         required: true,
     })
     telegram_id: number;
-
-    
-
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);
