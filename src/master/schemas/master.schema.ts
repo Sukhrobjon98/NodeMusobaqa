@@ -8,9 +8,6 @@ export type MasterDocument = HydratedDocument<Master>;
 
 
 export class Master {
-  @Prop({type: mongoose.Schema.Types.ObjectId})
-  _id: mongoose.Schema.Types.ObjectId;
-
   @Prop({
     type: String,
     required: true,
