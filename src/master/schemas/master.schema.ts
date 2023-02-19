@@ -19,6 +19,12 @@ export class Master {
   })
   phone_number: string;
 
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  is_active: boolean;
+
   @Prop()
   service_name: string;
   @Prop({

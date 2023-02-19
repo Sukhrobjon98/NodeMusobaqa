@@ -5,6 +5,7 @@ import { ClientModule } from './client/client.module';
 import { ServicesModule } from './services/services.module';
 import { MasterModule } from './master/master.module';
 import { OrdersModule } from './orders/orders.module';
+import { RolesModule } from './roles/roles.module';
 
 import { TelegrafModule } from 'nestjs-telegraf';
 @Module({
@@ -15,9 +16,10 @@ import { TelegrafModule } from 'nestjs-telegraf';
     MasterModule,
     MongooseModule.forRoot('mongodb://127.0.0.1/elektron_navbat'),
     OrdersModule,
+    RolesModule,
     TelegramModule, TelegrafModule.forRoot({
       token: '5854102071:AAHQVvTYpZs5rFFozFG8uOaQHerzoTrD0gA',
-    })
+    }),
   ],
 })
 
