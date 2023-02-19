@@ -9,24 +9,23 @@ export class RolesService {
         @InjectModel(Role.name) private roleModel: Model<RoleDocument>,
     ) { }
 
-    async createUser(telegram_id: number) : Promise<RoleDocument> {
+    async createUser(telegram_id: number): Promise<RoleDocument> {
         const user = new this.roleModel({ telegram_id, role: 'user' });
         return user.save();
     }
 
-    async createMaster(telegram_id: number) : Promise<RoleDocument> {
+    async createMaster(telegram_id: number): Promise<Role> {
         const user = new this.roleModel({ telegram_id, role: 'master' });
         return user.save();
     }
 
-    async createAdmin(telegram_id: number) : Promise<RoleDocument> {
+    async createAdmin(telegram_id: number): Promise<Role> {
         const user = new this.roleModel({ telegram_id, role: 'admin' });
         return user.save();
     }
 
-    async findUser(telegram_id: number) : Promise<String> {
-        return this.roleModel.findOne({ telegram_id }).exec().then((user) => {
-            return user.role;
-        });
+    async findUser(telegram_id: number): Promise<Role> {
+        const user = this.roleModel.findOne({ telegram_id }).exec();
+        return user;
     }
 }

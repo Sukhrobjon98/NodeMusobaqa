@@ -1,4 +1,5 @@
-import { Command, Hears, InjectBot, On, Start, Update } from "nestjs-telegraf";
+import { Hears, InjectBot, On, Start, Update } from "nestjs-telegraf";
+import { RolesService } from "src/roles/roles.service";
 import { Context, Telegraf } from "telegraf";
 import { Message } from "telegraf/typings/core/types/typegram";
 
@@ -6,32 +7,56 @@ import { Message } from "telegraf/typings/core/types/typegram";
 export class TelegramUpdate {
     Data: Array<any>
     userInfo: Object
-    constructor(@InjectBot() private readonly bot: Telegraf<Context>) {
+    constructor(@InjectBot() private readonly bot: Telegraf<Context>, private roleService: RolesService) {
         this.Data = [
             { name: 'Sartaroshxona', type: 'sartarosh', }, { name: 'Go\'zallik saloni', ype: 'salon', }]
 
     }
     @Start()
-    onStart(ctx: Context) {
-        if (true) {
-            return this.enterAdmin(ctx)
-            return this.enterMaster(ctx)
+    async onStart(ctx: Context) {
+        const telegram_id = ctx.from.id
+        console.log(telegram_id);
 
+        const check = await this.roleService.findUser(telegram_id)
+        console.log(check);
+
+        if (check) {
+            if (check.role == 'admin') {
+                return this.enterAdmin(ctx)
+            }
+            if (check.role == 'master') {
+                return this.enterMaster(ctx)
+            }
+            if (check.role == 'user') {
+                return this.enterClinet(ctx)
+            }
         }
-        this.enterClinet(ctx)
-        // ctx.replyWithHTML(`Assalomu alaykum! ${ctx.from.first_name}\n<b>Online navbat olish botiga xush kelibsiz</b>`, {
-        //     reply_markup: {
-        //         keyboard: [[
-        //             { text: "Ro'yhatdan o'tish" },
-        //         ]],
-        //         resize_keyboard: true,
-        //         selective: false,
-        //     }
-        // });
+        else {
+            return this.royhatgaOlish(ctx)
+        }
+
     }
 
 
     //Royhatdan o'tish qismi
+
+
+
+
+    //Royhatdan o'tish uchun
+    royhatgaOlish(ctx: Context) {
+        ctx.replyWithHTML('<b>Ro\'yhatdan o\'tish uchun quyidagi tugmalardan birini bosing</b>', {
+            reply_markup: {
+                keyboard: [[
+                    { text: "Ro'yhatdan o'tish" }
+                
+                ]],
+                resize_keyboard: true,
+ 
+            }
+        })
+    }
+
     @Hears("Ro'yhatdan o'tish")
     getRegsitration(ctx: Context) {
         ctx.replyWithHTML('<b>Ro\'yhatdan o\'tish uchun quyidagi tugmalardan birini bosing</b>', {
@@ -45,28 +70,6 @@ export class TelegramUpdate {
 
         })
     }
-
-    //Kasb qismi
-    // @On('message')
-    // onMessage(ctx: Context) {
-    //     const msg = ctx.message as Message.TextMessage;
-    //     if (msg.text === 'Usta') {
-    //         ctx.replyWithHTML("<b>Siz qaysi service bo'yicha hizmat ko'rsatasiz?</b>", {
-    //             reply_markup: {
-    //                 keyboard: this.Data.map((item) => {
-    //                     return [{ text: item.name }]
-    //                 }),
-    //                 resize_keyboard: true,
-    //             }
-    //         })
-    //     }
-    //     else if (msg.text === 'Mijoz') {
-    //         ctx.replyWithHTML("<b>Sizning ma'lumotlaringiz kerak bizga?</b>")
-    //     }
-    //     else {
-    //         ctx.replyWithHTML("<i>Siz mavjud bo'magan comandani tanladingzi...</i>")
-    //     }
-    // }
 
 
 
@@ -144,7 +147,6 @@ export class TelegramUpdate {
             }
         })
         const msg = ctx.message as Message.TextMessage;
-        console.log(msg.text);
     }
     @Hears('Xizmatlar')
     xizmatlat(ctx: Context) {
