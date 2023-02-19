@@ -1,9 +1,10 @@
+import { RolesModule } from './../roles/roles.module';
 import { TelegramUpdate } from './telegram.update';
 import { Module } from "@nestjs/common";
 
 @Module({
-    imports: [TelegramUpdate],
+    imports: [RolesModule],
     controllers: [],
-    providers: [],
+    providers: [TelegramUpdate],
 })
 export class TelegramModule {}
