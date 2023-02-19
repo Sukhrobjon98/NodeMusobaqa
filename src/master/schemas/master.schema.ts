@@ -27,39 +27,39 @@ export class Master {
 
   @Prop()
   service_name: string;
+
+  @Prop({ type: Number, required: true })
+  service_id: number;
+
   @Prop({
     type: String,
   })
   service_location: string;
 
-    @Prop({
-        type: String,
-    })
-    service_description: string;
-    
-    @Prop({
-    })
-    open_time: string;
+  @Prop({
+    type: String,
+  })
+  service_description: string;
 
-    @Prop({
-    })
-    close_time: string;
+  @Prop({})
+  open_time: string;
 
-    @Prop({
-        required: true,
-        type:Number,
-    })
-    service_price: number;
+  @Prop({})
+  close_time: string;
 
-    @Prop({
-        required: true,
-    })
-    spend_time: number;
+  @Prop({
+    required: true,
+    type: Number,
+  })
+  service_price: number;
 
-    @Prop({
-    })
-    service_rating: number;
+  @Prop({
+    required: true,
+  })
+  spend_time: number;
 
+  @Prop({default: 0})
+  service_rating: number;
 }
 
 export const MasterSchema = SchemaFactory.createForClass(Master);
